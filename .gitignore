@@ -50,3 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+**/*~
+**/\#*
+**/*.o
+**/*.s
+**/a.out
+/tmp*
+/thirdparty
+
+lacc
