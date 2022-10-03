@@ -32,9 +32,9 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  lacc_main(output_file_name, argv[optind]);
+  _main(output_file_name, argv[optind]);
 
   return (0);
 }
 
-void lacc_main(char *output, char *input) {}
+void _main(char *output, char *input) {}

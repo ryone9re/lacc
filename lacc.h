@@ -7,6 +7,6 @@
 #include <stdlib.h>
 
 /* main.c */
-void lacc_main(char *output, char *input);
+void _main(char *output, char *input);
 
 #endif /* LACC_H */
