@@ -1,37 +1,40 @@
 #include "lacc.h"
 
-char *filename;
-char *user_input;
-Token *token;
-
-static size_t align_to(size_t n, size_t align) {
-  return ((n + align - 1) & ~(align - 1));
-}
+static struct option longopts[] = {
+    {"output", required_argument, NULL, 'o'},
+    {"help", no_argument, NULL, 'h'},
+    {0, 0, 0, 0},
+};
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
-    error("引数の個数が正しくありません\n");
-    return (1);
-  };
+  int opt;
+  char *output_file_name;
 
-  // トークナイズしてパースする
-  filename = argv[1];
-  // user_input = read_file(filename);
-  user_input = filename;
-  token = tokenize();
-  Program *prog = program();
-  add_type(prog);
-
-  for (Function *f = prog->functions; f; f = f->next) {
-    size_t offset = 0;
-    for (VarList *vl = f->locals; vl; vl = vl->next) {
-      offset = offset + size_of(vl->var->type);
-      vl->var->offset = offset;
+  output_file_name = "a.out";
+  while ((opt = getopt_long(argc, argv, "o:h", longopts, NULL)) != -1) {
+    switch (opt) {
+      case 'o':
+        output_file_name = optarg;
+        break;
+      case 'h':
+        fprintf(stdout, "Usage: lacc [--output=o <file>] sources...\n");
+        exit(0);
+        break;
+      default:
+        fprintf(stdout, "Usage: lacc [--output=o <file>] sources...\n");
+        exit(1);
+        break;
     }
-    f->stack_size = align_to(offset, 8);
   }
 
-  codegen(prog);
+  if (optind != argc - 1 && optind != 2) {
+    fprintf(stdout, "Usage: lacc [--output=o <file>] sources...\n");
+    exit(1);
+  }
+
+  lacc_main(output_file_name, argv[optind]);
 
   return (0);
 }
+
+void lacc_main(char *output, char *input) {}
